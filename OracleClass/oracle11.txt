@@ -1,0 +1,428 @@
+To see the output in PL/SQL we need to use below command.
+ex:
+	SQL> set serveroutput on
+
+
+2) Userdefined exceptions 
+===========================
+Exceptions which are created by the user based on the requirement are called userdefined exceptions.
+
+steps to develop userdefined exceptions 
+----------------------------------------
+step1:
+------
+	Declare the exception 
+
+step2:
+------
+	Raise the exception 
+
+step3:
+-----
+	Handle the exception 
+
+ex:
+----
+	DECLARE 
+	MY_EX1 Exception;
+	SAL number:=5000;
+	BEGIN
+	
+	IF SAL>2000 THEN 
+	RAISE MY_EX1;
+	END IF;
+	DBMS_OUTPUT.PUT_LINE(SAL);
+
+	EXCEPTION
+	WHEN MY_EX1 THEN 
+	DBMS_OUTPUT.PUT_LINE('Salary is too large');
+	END;
+	/
+
+Cursors 
+========
+It is a named control structure that is used to handle the result set of a SELECT statement. 
+
+Cursor is a memory location which holds multiple rows of select command.
+
+In PL/SQL cursors are divided into two types.
+
+1) Implicit cursor 
+
+2) Explicit cursor 
+
+1) Implicit cursor
+-------------------
+All the activities related to cursor like opening the cursor, processing the cursor or closing the cursor which is done by automatically is called implicit cursor.
+
+We have four implicit cursor attributes.
+
+i) SQL%ISOPEN 
+
+ii) SQL%FOUND 
+
+iii) SQL%NOTFOUND 
+
+iv) SQL%ROWCOUNT 
+
+
+i) SQL%ISOPEN 
+----------------
+It is a boolean attribute which always returns false.
+
+ex:
+
+	BEGIN 
+	IF SQL%ISOPEN THEN 
+	DBMS_OUTPUT.PUT_LINE('cursor is open');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('cursor is closed');
+	END IF;
+	END;
+	/
+
+ii) SQL%FOUND 
+-----------
+It is a boolean attribute which returns true if SQL command is success and returns false if SQL command is failed.
+
+ex:
+	BEGIN 
+	update student set sno=103 where sname='ramulu';
+	IF SQL%FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Record Not updated');
+	END IF;
+	END;
+	/	
+
+iii) SQL%NOTFOUND 
+-------------------
+It is completely reverse of SQL%FOUND.
+
+It is a boolean attribute which returns false if SQL command is success and returns true if SQL command is failed.
+
+ex:
+---
+	BEGIN 
+	update student set sname='Alan' where sno=109;
+	IF SQL%NOTFOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Record Not updated');
+	END IF;
+	END;
+	/	
+
+iv) SQL%ROWCOUNT 
+-----------------
+It will return number of records effecting in a database table.
+
+ex:
+---
+	BEGIN
+	update student set sno=101;
+	DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' Records Updated');
+	END;
+	/
+
+2) Explicit cursor 
+--------------------
+All the activities related to cursor like opening the cursor, processing the cursor and closing the cursor which is done by a programmer is called explicit cursor.
+
+We can use explicit cursor when select statement returns more then one row.
+
+Steps to work with explicit cursor
+--------------------------------
+step1:
+-----
+	Declare the cursor.
+
+step2:
+-----
+	Open the cursor.	
+
+step3:
+-----
+	Fetch the data from cursor to local variables.
+
+step4:
+-----
+	Close the cursor.
+
+
+Q) Write a PL/SQL program to select employee names from emp table?
+
+	DECLARE 
+	CURSOR C1 is select ename from emp;
+	L_ename emp.ename%TYPE;
+	BEGIN 
+
+	OPEN C1;
+
+	LOOP
+	FETCH C1 into L_ename;
+	EXIT WHEN C1%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_Ename);
+	END LOOP;
+
+	CLOSE C1;
+	END;
+	/
+
+Q) Write a PL/SQL program to select employee name and employee salary from emp table?
+
+	DECLARE 
+	CURSOR C2 is select ename,esal from emp;
+	L_ename emp.ename%TYPE;
+	L_esal emp.esal%TYPE;
+	BEGIN
+	OPEN C2;
+
+	LOOP 
+	FETCH C2 into L_ename,L_esal;
+	EXIT WHEN C2%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END LOOP;
+	
+	CLOSE C2;
+	END;
+	/
+
+Q) Write a PL/SQL program to display employees information from emp table?
+
+	DECLARE 
+	CURSOR C3 is select * from emp;
+	A emp%ROWTYPE;
+	BEGIN 
+	OPEN C3;
+	LOOP
+	FETCH C3 into A;
+	EXIT WHEN C3%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END LOOP;
+	
+	CLOSE C3;
+	END;
+	/
+	
+
+PL/SQL procedures
+==================
+It is a named PL/SQL block that compiled and stored in a database permanently.
+
+It is used to perform some operations repeatedly.
+
+syntax:
+------
+	create or replace procedure <procedure_name>
+	is
+	begin 
+	-
+	- // set of statements 
+	-
+	end;
+	/
+
+
+Q) Write a procedure to display Hello World?
+
+	create or replace procedure p1
+	is
+	begin 
+	DBMS_OUTPUT.PUT_LINE('Hello World');
+	END;
+	/
+
+	To execute the procedure we need to use below command.
+	ex:
+		exec p1;
+
+PL/SQL procedure having three parameters.
+
+1) IN parameter 
+
+2) OUT parameter 
+
+3) IN OUT parameter 
+
+
+1) IN parameter 
+-------------------
+It is used to accept the inputs from the user.
+
+
+Q) Write a procedure to perform sum of two numbers?
+
+	create or replace procedure sum(A IN number, B IN number)
+	is
+	C number;
+	begin
+	C:=A+B;
+	DBMS_OUTPUT.PUT_LINE(C);
+	END;
+	/
+	
+	To execute the procedure we need to use below command.
+	ex:
+		exec  sum(10,20);
+
+
+2) OUT parameter
+----------------
+It is used to return the value to the user.
+
+
+Q) Write a procedure to perform sum of two numbers and return sum?
+
+	create or replace procedure ret_sum(A IN number,B IN number,C OUT number)
+	is
+	begin 
+	C:=A+B;
+	END;
+	/
+	
+	To execute the procedure we need to use below commands.
+	ex:
+		//declare a bind variable 
+		variable N number;
+
+		//execute the procedure 
+		exec  ret_sum(10,30,:N);
+
+		//print the bind variable 
+		print N;
+	
+
+3) IN OUT parameter 
+-------------------
+It is used to accept the value from the user and It will return the value to the user.
+	
+Q) Write a procedure to find out square of a given number?
+
+	create or replace procedure square(A IN OUT number)
+	is
+	begin
+	A:=A*A;
+	END;
+	/
+
+	To execute above procedure we need to use below commands.
+
+	ex:
+		//declare bind variable 
+		variable N number;
+		
+		//initialized the bind variable 
+		BEGIN
+		:N:=5;
+		END;
+		/ 
+
+		//execute the procedure 
+		exec square(:N);
+
+		//print the bind variable 
+		print N;
+
+Using PL/SQL procedures we can perform DML operations.
+
+Q) Write a procedure to insert a record into student table?
+
+	create or replace procedure insert_student(L_sno IN student.sno%TYPE,
+							L_sname IN student.sname%TYPE,
+								L_sadd IN student.sadd%TYPE)
+	is
+	begin 
+	insert into student values(L_sno,L_sname,L_sadd);
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+	END;
+	/
+
+	To execute the procedure we need to use below command.
+	ex:
+		exec  insert_student(103,'ramana','vizag');
+
+
+
+Q) Write a procedure to update student name based on student number?
+
+	create or replace procedure update_student(L_sno IN student.sno%TYPE)
+	is
+	begin 
+	update student set sname='rani' where sno=L_sno;
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	END;
+	/
+	To execute the procedure we need to use below command.
+	ex:
+		exec update_student(104);
+
+
+Q) Write a procedure to delete student record based on student number?
+
+	create or replace procedure delete_student(L_sno IN student.sno%TYPE)
+	is
+	begin 
+	delete from student where sno=L_sno;
+	DBMS_OUTPUT.PUT_LINE('Record Deleted');
+	END;
+	/
+
+	To execute the procedure we need to use below command.
+	ex:
+		exec delete_student(104);
+
+
+Q) Write a query to display list of procedures present in database?
+
+	select object_name from user_objects where object_type='PROCEDURE';
+
+
+Q) Write a query to see the source code of a procedure?
+
+	select text from user_source where name='P1';
+
+
+Q) Write a query to drop the procedure?
+
+	drop procedure p1;
+	drop procedure sum;
+
+
+
+Interview Question
+===================
+
+Q) What is the difference between normalization and denormalization?
+
+Normalization 					Denormalization 
+-------------					----------------
+It increases the complexity due to multiple 	It reduces the complexity due to single table. 
+tables. 
+
+No redundant data. 				Redundant data. 
+
+No waste of memory. 				Waste of memory. 
+
+Slower reads.  					Slower writes.
+  
+Low data availability. 				High data availability. 
+
+Need of joins. 					No need of joins.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

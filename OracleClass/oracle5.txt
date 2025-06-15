@@ -1,0 +1,356 @@
+Working with Date values
+=========================
+Every database software supports different date patterns.
+ex:
+	oracle - dd-MMM-yy
+	mysql  - yyyy-MM-dd 
+	and etc.
+
+drop table emp1;
+create table emp1(eid number(3),ename varchar2(10),edoj date);
+insert into emp1 values(101,'Alan','01-JAN-25');
+insert into emp1 values(102,'Jose',sysdate);
+insert into emp1 values(103,'Kelvin',current_date);
+commit;
+
+3) Date Function 
+------------------
+We have following list of date functions.
+
+MONTHS_BETWEEN()
+----------------
+	It returns number of months between two dates.
+	ex:
+		select MONTHS_BETWEEN('01-JAN-25','01-MAY-25') from dual;
+		select ABS(MONTHS_BETWEEN('01-JAN-25','01-MAY-25')) from dual;	
+
+ADD_MONTHS()
+-------------
+	It add the months in a given date.
+	ex:
+		select ADD_MONTHS('13-MAY-25',3) from dual;
+
+NEXT_DAY()
+----------
+	It returns the date of a given day in a week.
+	ex:
+		select NEXT_DAY(sysdate,'SUNDAY') from dual;
+		select NEXT_DAY(sysdate,'TUESDAY') from dual;
+
+		
+LAST_DAY()
+----------
+	It returns last date of a month.
+	ex:
+		select LAST_DAY(sysdate) from dual;
+		select LAST_DAY('17-APR-25') from dual;
+
+4) Conversion functions 
+----------------------
+Conversion functions are used to convert from one type to another type.
+
+ex:
+	TO_CHAR() 
+
+We have two pseudo's for TO_CHAR() function.
+
+i) number to_char() 
+-------------------
+It takes '9' in digits, dollar and euro's symbol.
+
+ex:
+	select eid,ename,esal from emp;	
+	select eid,ename,TO_CHAR(esal,'9,999') from emp;
+	select eid,ename,TO_CHAR(esal,'99,999') from emp;	
+	select eid,ename,TO_CHAR(esal,'$99,999') from emp;
+	select eid,ename,TO_CHAR(esal,'$99,999') as ESAL from emp;
+
+ii) date to_char()  
+-----------------	
+	select TO_CHAR(sysdate,'dd-MM-yyyy') from dual;
+
+	select TO_CHAR(sysdate,'yyyy-MM-dd') from dual;
+
+	select TO_CHAR(sysdate,'year') from dual;
+
+	select TO_CHAR(sysdate,'month') from dual;
+	
+	select TO_CHAR(sysdate,'day') from dual;
+
+	select TO_CHAR(sysdate,'yyyy') from dual;
+	
+	select TO_CHAR(sysdate,'MM') from dual;
+
+	select TO_CHAR(sysdate,'dd') from dual;
+	
+	select TO_CHAR(sysdate,'HH:MI:SS') from dual;
+	
+	select TO_CHAR(sysdate,'dd-MM-yyyy HH:MI:SS') from dual;
+
+
+Duplicate table or Copy of a table 
+===================================
+Using create and select command we can create duplicate or copy of a table.
+
+syntax:
+------
+	create table <table_name> as select stmt;
+
+ex:
+	create table emp1 as select * from emp;
+
+	create table emp1 as select eid,ename,esal from emp;
+
+	create table emp1 as select * from emp where deptno=10;
+	
+	create table emp1 as select * from emp where deptno<>10;
+
+	create table emp1 as select * from emp where comm is null;
+
+	create table emp1 as select * from emp where eid in (201,202,203);
+
+	create table emp1 as select * from emp where ename like 'A%';
+
+	create table emp1 as select * from emp where eid between 201 and 205;
+
+cl scr
+=======
+	It is used to clear the SQL command prompt.
+	ex:
+		cl scr
+ 
+
+Group by clause 
+================
+It is used to divided the rows in a group so that we can apply group functions.
+
+A column which is used in select clause then same column name must used in group by clause.
+
+ex:
+---
+
+Q) Write a query to display sum of salary of each department?
+
+	select sum(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display average salary of each job?
+
+	select avg(esal),job from emp group by job;
+
+
+Q) Write a query to display maximum salary of each department?
+
+	select max(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display minimum salary of each job?
+
+	select min(esal),job from emp group by job;
+
+
+
+Q) Write a query to display sum of salary of each department except 10 department?
+
+	select sum(esal),deptno from emp where deptno<>10 group by deptno;
+
+
+Having clause 
+============
+Having clause is used to filter the rows from group by clause.
+
+Having clause must declare after group by clause.
+
+ex:
+
+Q) Write a query to display sum of salary of each department whose sum of salary is greater then 50000?
+
+	select sum(esal),deptno from emp group by deptno having sum(esal)>50000;
+
+
+
+Q) Write a query to dispaly maximum salary of each job whose maximum salary is greater then 25000?
+
+	select max(esal),job from emp group by job having max(esal)>25000;
+
+
+Order by clause 
+===================
+It is used to arrange the rows in a table.
+
+By default it arrange the rows in ascending order.
+
+ex:
+	select * from emp order by eid;
+	select * from emp order by eid desc;
+
+	select * from emp order by ename;
+	select * from emp order by ename desc;
+
+	select * from emp order by esal;
+	select * from emp order by esal desc;
+
+	
+Q) Write a query to display sum of salary of each department whose sum of salary is greater then 50000?
+
+	select sum(esal),deptno from emp group by deptno having sum(esal)>50000 order by deptno;
+
+	select sum(esal),deptno from emp group by deptno having sum(esal)>50000 order by deptno desc;
+
+Integrity Constraints 
+=====================
+Constraints are the rules which are applied on a tables.
+
+Using contraints we can achieve accuracy and quality of data.
+
+We have five constraints as given below.
+
+1) NOT NULL
+
+2) UNIQUE 
+
+3) PRIMARY KEY 
+
+4) FOREIGN KEY 
+
+5) CHECK 
+
+Constraints are created at two level's.
+
+i) Column level 
+
+ii) Table level 
+
+1) NOT NULL
+------------
+NOT NULL constraint does not accept null values.
+
+NOT NULL constraint can accept duplicate values.
+
+NOT NULL constraint can be created only at column level.
+
+column level
+------------
+drop table student;
+
+create table student(sno number(3) NOT NULL, sname varchar2(10), sadd varchar2(12));
+
+insert into student values(101,'raja','hyd');
+
+insert into student values(101,'ravi','delhi');
+
+insert into student values(null,'ramana','vizag'); // invalid 
+
+commit;
+
+Note
+------
+NOT NULL constraint can be created for multiple columns.
+
+drop table student;
+
+create table student(sno number(3) NOT NULL, sname varchar2(10) NOT NULL, 
+								sadd varchar2(12) NOT NULL);
+insert into student values(101,'raja','hyd');
+
+insert into student values(null,'ravi','delhi'); //invalid 
+
+insert into student values(102,null,'vizag');  //invalid 
+
+insert into student values(102,'ravi',null); // invalid  
+
+
+2) UNIQUE 
+------------
+UNIQUE constraint does not accept duplicate values.
+
+UNIQUE constraint can accept null values.
+
+UNIQUE constraint can be created at column level and table level.
+
+column level 
+-------------
+
+drop table student;
+
+create table student(sno number(3) UNIQUE, sname varchar2(10), sadd varchar2(12));
+
+insert into student values(101,'raja','hyd');
+
+insert into student values(101,'ravi','delhi'); //invalid 
+
+insert into student values(null,'ramana','vizag'); 
+
+commit;
+
+
+Note:
+-----
+UNIQUE contriant can be created for multiple columns.
+
+ex:
+	drop table student;
+
+	create table student(sno number(3) UNIQUE, 
+					sname varchar2(10) UNIQUE, sadd varchar2(12) UNIQUE);
+
+	insert into student values(101,'raja','hyd');
+	commit;
+
+
+
+
+table level 
+-------------
+
+drop table student;
+
+create table student(sno number(3), sname varchar2(10), sadd varchar2(12),  UNIQUE(sno));
+
+insert into student values(101,'raja','hyd');
+
+insert into student values(101,'ravi','delhi'); //invalid 
+
+insert into student values(null,'ramana','vizag'); 
+
+commit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

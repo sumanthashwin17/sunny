@@ -1,0 +1,344 @@
+Indexes 
+========
+Index is used to improve the performance of select statement.
+
+Index in a database is similar to index in a book.
+
+We can create index only to those columns which are widely used in where clause.
+
+Whenever we create index, two columns will be created one is ROWId and second is indexed column.
+All the records will store in ascending order in indexed column.
+
+ex:
+			indexed table 
+		--------------------------------
+		ROWID	|	Indexed column 
+		--------------------------------
+			|	9000
+			|	19000
+			|	22000
+			|	27000
+			|	39000
+			|	420000
+		---------------------------------
+
+We have two types of indexes.
+
+1) Simple index 
+
+2) Complex index 
+
+
+1) Simple index 
+------------------
+If index is created only for one column is called simple index.
+ex:
+	create index idx1 ON emp(eid);
+
+Here index is used when we use eid in where clause.
+ex: 
+	select * from emp where eid=206;
+
+2) Complex index
+-------------------
+If index is created for multiple columns is called complex index.
+
+ex:
+	create index idx2 ON emp(esal,deptno);
+
+Here index is used when we use esal and deptno in where clause.
+ex:
+	select * from emp where esal=9000 and deptno=10;
+
+
+Q) Write a query to display list of indexes present in database?
+
+	select index_name from user_indexes;
+
+
+Q) Write a query to drop the indexes?
+
+	drop index idx1;
+	drop index idx2;
+
+Joins 
+======
+select * from emp,dept;  // 24 records 
+
+select eid,ename,esal,dname,dloc from emp,dept; // 24 records 
+
+select eid,ename,esal,deptno,dname,dloc from emp,dept; // column ambiguously defined
+
+To overcome above problem we need to use table_name.column.name.
+
+ex:
+	select emp.eid,emp.ename,emp.deptno,dept.dname,dept.dloc from emp,dept; // 24 records 
+
+Table alias 
+===========
+A userdefined heading given to a table is called table alias.
+
+Using table alias length of the query will reduce meanwhile we can maintain the performance.
+
+ex:
+	select e.eid,e.ename,e.deptno,d.dname,d.dloc from emp e,dept d;// 24 records 
+
+
+Defintion
+=========
+A join is used to retrieve/combine the rows from one or more then one table.
+
+We have following list of joins.
+
+1) Equi Join 
+
+2) Non-Equi Join 
+
+3) Self Join 
+
+4) Cartisian Product 
+
+5) Inner Join 
+
+6) Outer Join 
+
+and etc.
+
+1) Equi Join 
+-------------
+If two tables are joined by using common column is called equi join.
+
+ex:
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d
+	where(e.deptno=d.deptno); // 6 records 
+
+
+2) Non-Equi Join 
+----------------
+If two tables are joined without using equi-join operator then it is called non-equi join.
+
+ex:
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d
+	where e.esal between 25000 and 40000;//  2 * 4  = 8 records 
+
+3) Self Join 
+-------------
+A table which joined to itself is called self join.
+
+In self join we need to create two table alias for same table.
+
+ex:
+	select e1.eid,e1.ename,e1.esal,e2.job,e2.comm from emp e1,emp e2
+	where(e1.deptno=e2.deptno); // 6 + 6 = 12 records 
+
+
+4) Cartisian Product
+------------------
+It is used to return all the possible combinations.
+
+ex:
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d; // 6*4=24 records 
+
+
+
+5) Inner Join 
+--------------
+It is similar to equi join.
+It is given by ANSI people.
+ANSI stands for American National Standards Insitute.
+
+ex:
+	
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e INNER JOIN dept d
+	ON(e.deptno=d.deptno); // 6 records
+
+
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e JOIN dept d
+	ON(e.deptno=d.deptno);
+
+
+6) Outer join
+-------------
+It is a extension of equi join.
+
+A '+' symbol denoted as outer join.
+
+It returns matching as well as not matching records.
+
+It is classified into three types.
+
+i) Left outer join 
+
+ii) Right outer join 
+
+iii) full outer join 
+
+i) Left outer join 
+-------------------
+	SQL
+	----
+		select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d
+		where(e.deptno=d.deptno(+));
+	ANSI 
+	----
+		select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e LEFT OUTER JOIN dept d
+		ON(e.deptno=d.deptno);
+
+
+ii) right outer join 
+-------------------
+	SQL
+	----
+		select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d
+		where(e.deptno(+)=d.deptno);
+	ANSI 
+	----
+		select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e RIGHT OUTER JOIN dept d
+		ON(e.deptno=d.deptno);
+
+iii) full outer join 
+--------------------
+
+	ANSI 
+	----
+		select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e FULL OUTER JOIN dept d
+		ON(e.deptno=d.deptno);
+
+Views
+=======
+A view is a virtual representation of a data from one or more then one table.
+
+A table which is used to create a view is called base table or above table.
+
+syntax:
+-----
+	create view <view_name> as select stmt;
+
+View does not have any data.
+
+View does not consumes the memory.
+
+View will get the data when we run select command.
+
+We have following list of views.
+
+1) Simple view 
+
+2) complex view 
+
+3) With read only view 
+
+4) With check option view
+
+5) Materialized view 
+
+1) Simple view 
+---------------
+If a view is created by using one base table is called simple view.
+
+DML operations are allowed in simple view.
+
+ex:
+	create view v1 as select * from emp;
+
+	select * from v1; // 7 records 
+
+	delete from v1 where eid=207;
+
+	select * from v1; // 6 records 
+	select * from emp;// 6 records 
+
+2) complex view
+-----------------
+If view is created by using more one base tables is called complex view.
+
+DML operations are not allowed in complex view.
+
+ex:
+	create view v2 as select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d
+	where (e.deptno=d.deptno);
+
+	select * from v2; // 6 records 
+
+	delete from v2; //cannot delete from view
+
+3) With read only view 
+----------------------
+If we create a view by using one base table and DML operations are not required then it is called 
+with read only view.
+
+ex:
+---
+	create view v3 as select * from emp with read only;
+
+	select * from v3; // 6 records 
+
+	delete from v3; // cannot perform a DML operation
+
+	
+4) With check option view
+---------------------------
+If a view is created by using one base table and DML operations are required only when our condition
+is true is called with check option view.
+
+ex:
+	create view v4 as select * from emp where deptno=30 with check option;
+
+	select * from v4;
+
+	insert into v4 values(207,'Lara',47000,50,'Salesman',700);// view WITH CHECK OPTION
+
+	insert into v4 values(207,'Lara',47000,30,'Salesman',700);
+	
+	select * from v4;  // 3 records 
+		
+	select * from emp; // 7 records 
+
+5) Materialized view 
+---------------------
+To create a materialized view a table must have primary key.
+
+Materialized view is also known as snapshot.
+
+ex:
+	alter table emp ADD primary key(eid);
+
+	create materialized view v5 as select * from emp;
+
+	select * from v5; // 7 records 
+	select * from emp; // 7 records 
+
+	delete from emp where eid=207;
+
+	select * from v5; // 7 records 
+	select * from emp; // 6 records 
+
+To overcome this problem we need to refresh the materialized view.
+ex:
+	exec DBMS_SNAPSHOT.REFRESH('v5');
+
+	select * from v5; // 6 records 
+
+
+Q) Write a query to see the list of view present in database?
+
+	select view_name from user_views;
+
+
+Q) Write a query to drop the view.
+	
+	drop view v1;
+	drop view v2;
+	drop view v3;
+	drop view v4;
+	drop materialized view v5;
+
+
+
+
+
+
+
+
+
+

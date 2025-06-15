@@ -1,0 +1,442 @@
+Underscore (_)
+===============
+
+Q) Write a query to display employees information whose employee name having second letter as 'l'?
+
+	select * from emp where ename like '_l%';
+
+
+Q) Write a query to display employees information whose employee name having second last letter as 'o'?
+
+	select * from emp where ename like '%o_';
+
+
+Q) Write a query to display employees information whose employee name having third letter as 'l'?
+
+	select * from emp where ename like '__l%';
+
+DDL 
+=====
+It is a collection of five commands.
+
+1) create - tables 
+
+2) alter  - Columns 	
+
+3) drop   - tables 
+
+4) truncate - Rows/Records 
+
+5) rename  - tables 
+
+
+alter command 
+================
+Using alter command we can perform following activities very easily.
+
+i) Adding a new column 
+
+ii) Modifying a column 
+
+iii) Renaming a column 
+
+iv) Droping a column 
+
+
+
+i) Adding a new column 
+-------------------------
+Using alter command we can add new column in a database table.
+
+syntax:
+------
+	alter table <table_name> ADD (col datatype(size));
+
+ex:
+	alter table student ADD (state varchar2(10));
+	alter table student ADD (pincode number(8));
+	alter table student ADD (state varchar2(10), pincode number(8));
+
+	update student set state='Telangana' where sno=101;
+
+
+
+ii) Modifying a column 
+--------------------
+Using alter command we can modify the column.
+
+We can increase or decrease size of a column only when existing values are fit into new size.
+
+We can change datatype of a column when column is empty.
+
+syntax:
+--------
+	alter table <table_name> MODIFY (col datatype(size));
+
+ex:
+	desc  student;	
+
+	alter table student MODIFY (state varchar2(12));
+
+	desc student;
+
+	alter table student MODIFY (pincode varchar2(8));
+
+	desc student;
+	
+iii) Renaming a column 
+-----------------------
+Using alter command we can rename a column name.
+
+syntax:
+-------
+	alter table <table_name> RENAME column <old_name> to <new_name>;
+
+ex:
+	alter table student rename column state to district;
+
+	alter table emp rename column esal to dailywages;
+
+	alter table emp rename column job to designation;
+
+
+iv) Droping a column 
+---------------------
+Using alter command we can drop the column.
+
+syntax:
+-----
+	alter table <table_name> DROP (col1,col2,..,colN);
+
+ex:
+---
+	alter table student DROP (district,pincode);
+
+
+3) drop  command
+===================
+It is used to drop a table from database.
+
+syntax:
+-------
+	drop table <table_name>;
+	
+ex:
+	drop table student;
+	drop table emp;
+	drop table dept; 
+
+
+4) truncate command 
+--------------------
+It is used to delete the rows permanently from database.
+
+syntax:
+------
+	truncate table <table_name>;
+ex:
+	truncate table student;
+	truncate table dept;
+	truncate table emp;
+
+
+Q) What is the difference between delete and truncate command?
+
+delete						truncate 
+----------					------------
+It is a DML command.				It is a DDL command.
+
+It deletes the temperory.			It deletes the data permanently.
+
+We can rollback the data.			We can't rollback the data.
+
+Where clause can be used.			Where clause can't be used. 
+
+
+5) rename command
+--------------------
+It is used to rename table name.
+
+syntax:
+-------
+	rename <old_name> to <new_name>;
+ex:
+	rename student to students;
+	rename dept to department;
+	rename emp to employees; 	
+
+
+Functions 
+==========
+We have two types of functions.
+
+1) Group Functions / Multiple row functions 
+
+2) Scalar Functions / Single Row functions 
+
+
+1) Group Functions
+------------------
+Group functions are applicable for multiple rows.
+
+We have following list of group functions.
+
+ex:
+	sum(),avg(),min(),max(),count(*) and count(exp).
+
+
+Q) Write a query to display sum of salary of each employee?
+
+	select sum(esal) from emp;
+
+
+Q) Write a query to display average salary of each employee?
+
+	select avg(esal) from emp;
+
+
+Q) Write a query to display least salary form employee table?
+
+	select min(esal) from emp;
+
+
+Q) Write a query to display highest salary from employee table?
+
+	select max(esal) from emp;
+
+
+Q) What is the difference between count(*) and count(exp) ? 
+
+count(*)
+----------
+	It returns number of rows present in database table.
+	It includes null records.
+	ex:
+		select count(*) from emp; // 6
+		select count(*) from dept; // 4 
+
+count(exp)
+------------
+	It returns number of values present in a database table column.
+	It does not include null values.
+	ex:
+		select count(eid) from emp; // 6
+		select count(comm) from emp; // 5 
+
+Q) Write a query to check username and password valid or not?
+
+
+userlist  table
+---------------
+drop table userlist;
+
+create table userlist(uname varchar2(10), pwd varchar2(10));
+
+insert into userlist values('raja','rani');
+
+insert into userlist values('king','kingdom');
+
+commit;
+
+ex:
+	select count(*) from userlist where uname='raja' and pwd='rani'; // 1 
+
+	select count(*) from userlist where uname='raja' and pwd='rani2'; // 0
+
+
+Dual table 
+==========
+Dual table is a dummy table.
+
+It contains only one row and one column.
+
+It is used to perform arithmetic operations and to see the current system date.
+
+ex:
+	select 10+20 from dual; 
+	
+	select 10*2 from dual;
+
+	select sysdate from dual;
+
+	select current_date from dual;
+
+
+2) Scalar Functions 
+-----------------------
+We have following list of scalar functions.
+
+i) Character functions 
+
+ii) Number functions 
+
+iii) Date functions 
+
+iv) Conversion functions 
+
+
+
+i) Character functions 
+-----------------------
+We have following list of character functions.
+
+upper()
+--------
+	It is used to convert the string to uppercase.
+	ex:
+		select upper('oracle training') from dual;
+lower() 
+------
+	It is used to convert the string to lowercase.
+	ex:
+		select lower('ORACLE TRAINING') from dual;
+
+initcap()
+---------
+	It is used to convert the string to initcap.
+	ex:
+		select initcap('oracle training') from dual;
+
+lpad()
+------
+	It is used pad the characters to left side.
+	ex:
+		select lpad('oracle',10,'z') from dual; // zzzzoracle
+
+rpad()
+------
+	It is used pad the characters to right side.
+	ex:
+		select rpad('oracle',10,'z') from dual; // oraclezzzz
+
+ltrim()
+--------
+	It is used to trim the characters from left side.
+	ex:
+		select ltrim('zzoraclezz','z') from dual; // oraclezz
+
+rtrim()
+--------
+	It is used to trim the characters from right side.
+	ex:
+		select rtrim('zzoraclezz','z') from dual; // zzoracle	
+
+trim()
+------
+	It is used to trim the characters from both the sides.
+	ex:
+		select trim('z' from 'zzoraclezz') from dual;
+
+replace()
+---------
+	It is used to replace the character in a string.
+	ex:
+		select replace('oracle','a','A') from dual;	
+
+ii) Number functions
+---------------------
+We have following list of number functions.
+
+abs()
+----
+	It returns absoluate value.
+	ex:
+		select abs(-40) from dual;
+
+sqrt()
+--------
+	It returns square root value.
+	ex:
+		select sqrt(36) from dual;
+
+power(A,B)
+---------
+	It returns power value.
+	ex:
+		select power(5,3) from dual;
+
+ceil()
+-------
+	It return ceil value.
+	ex:
+		select ceil(10.6) from dual; // 11 
+
+floor()
+--------
+	It returns floor value.
+	ex:
+		select floor(10.6) from dual; // 10
+
+round()
+------
+	It returns nearest value.
+	ex:
+		select round(9.5) from dual; // 10
+		select round(9.4) from dual; // 9
+
+trunc()
+------
+	It is used to remove decimal values.
+	ex:
+		select trunc(10.67) from dual; // 10
+
+greatest()
+----------
+	It returns greatest value.
+	ex:
+		select greatest(5,9,1,2) from dual; // 9 
+
+least() 
+------
+	It returns least value.
+	ex:
+		select least(5,9,1,2) from dual; // 1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,485 @@
+To see the output in PL/SQL we need to execute below command.
+ex:
+	SQL> set  serveroutput on 
+
+Using PL/SQL we can perform DRL operations.
+
+To perform DRL operations we need to use into clause.
+
+
+Q) Write a PL/SQL program to display employee name whose employee id is 201?
+
+
+	DECLARE 
+	L_ename varchar2(10);
+	BEGIN
+	select ename into L_ename from emp where eid=201;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	END;
+	/
+
+Q) Write a PL/SQL program to display employee name, employee salary based on employee id?
+
+	DECLARE 
+	L_eid number(3);
+	L_ename varchar2(10);
+	L_esal  number(10,2);
+	BEGIN 
+	L_eid:=&eid;
+	select ename,esal into L_ename,L_esal from emp where eid=L_eid;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/
+
+Percentage(%) TYPE Attribute 
+==============================
+It is used to declare a local variable with respect to a column type.
+
+syntax:
+------
+	<variable_name>  <table_name>.<col_name>%TYPE;
+
+
+Q) Write a PL/SQL program to display employee name, employee salary based on employee id?
+
+	DECLARE 
+	L_eid  emp.eid%TYPE;
+	L_ename emp.ename%TYPE;
+	L_esal  emp.esal%TYPE;
+	BEGIN 
+	L_eid:=&eid;
+	select ename,esal into L_ename,L_esal from emp where eid=L_eid;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/
+
+
+Percentage (%) ROWTYPE attribute 
+=================================
+It is used to declare a local variable holds complete row of a table.
+
+syntax:
+--------
+	<variable_name>  <table_name>%ROWTYPE;
+
+ROWTYPE variable we can't display directly.IF we to display any column then we need to use  
+ex:
+	variable_name.column_name
+
+
+Q) Write a PL/SQL program to display employee information whose employee id is 204?
+
+	DECLARE 
+	A emp%ROWTYPE;
+	BEGIN
+	select * into A from emp where eid=204;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END;
+	/
+
+
+Q) Write a PL/SQL program to display employee information based on employee id?
+
+
+	DECLARE 
+	L_eid emp.eid%TYPE;
+	A emp%ROWTYPE;
+	BEGIN
+	L_eid:=&eid;
+	select * into A from emp where eid=L_eid;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END;
+	/
+
+
+Control Statements
+===================
+We have three control statements in PL/SQL.
+
+1) IF THEN 
+
+2) IF THEN ELSE 
+
+3) IF THEN ELSIF THEN ELSE 
+
+
+1) IF THEN 
+------------
+It evaluates the code only if our condition is true.
+
+ex:
+	DECLARE 
+	A number:=5000;
+	BEGIN
+	
+	IF A>2000 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is Too High');
+	END IF;
+
+	END;
+	/
+
+ex:
+----
+	DECLARE 
+	A number:=1000;
+	BEGIN
+	
+	IF A>2000 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is Too High');
+	END IF;
+
+	END;
+	/
+
+2) IF THEN ELSE 
+----------------
+It evaluates the code either our condition is true or false.
+
+ex:
+	
+	DECLARE 
+	A number:=5000;
+	BEGIN
+	
+	IF A>2000 THEN 
+	DBMS_OUTPUT.PUT_LINE('Higher');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Lower');
+	END IF;
+
+	END;
+	/
+
+ex:
+----
+	DECLARE 
+	A number:=1000;
+	BEGIN
+	
+	IF A>2000 THEN 
+	DBMS_OUTPUT.PUT_LINE('Higher');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Lower');
+	END IF;
+
+	END;
+	/
+
+3) IF THEN ELSIF THEN ELSE 
+--------------------------
+It evaluates the code based on multiple conditions.
+
+ex:
+	DECLARE 
+	L_option number;
+	BEGIN
+	L_option:=&opt;
+
+	IF L_option=100 THEN 
+	DBMS_OUTPUT.PUT_LINE('Police number');
+	ELSIF L_option=103 THEN 
+	DBMS_OUTPUT.PUT_LINE('Enquiry number');
+	ELSIF L_option=108 THEN 
+	DBMS_OUTPUT.PUT_LINE('Emergency number');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Invalid option');
+	END IF;
+
+	END;
+	/
+
+LOOPS 
+=========
+We have three types of loops in PL/SQL.
+
+1) Simple Loop 
+
+2) While Loop
+
+3) For Loop 
+
+1) Simple Loop 
+--------------
+It evaluates the code how long our condition is true.
+
+ex:
+---
+	DECLARE 
+	A number:=1;
+	BEGIN 
+	
+	LOOP 
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXIT WHEN A=10;
+	A:=A+1;
+	END LOOP;
+
+	END;
+	/
+
+2) While Loop
+---------------
+It evaluates the code how long our condition is true.
+
+ex:
+--
+	DECLARE 
+	A number:=1;
+	BEGIN
+	
+	WHILE A<=10 LOOP 
+	DBMS_OUTPUT.PUT_LINE(A);
+	A:=A+1;
+	END LOOP;
+
+	END;
+	/
+	
+3) For Loop 
+-----------
+It evaluates the code how long our conditions is true.
+
+ex:
+	DECLARE 
+	A number;
+	BEGIN 
+
+	FOR A IN 1 .. 10 LOOP 
+	DBMS_OUTPUT.PUT_LINE(A);
+	END LOOP;
+
+	END;
+	/
+
+Q) Write a PL/SQL program to display multiplication table of a given number?
+
+	DECLARE 
+	N number;
+	A number;
+	BEGIN 
+	N:=&n;
+	
+	FOR A IN 1 .. 10 LOOP
+	DBMS_OUTPUT.PUT_LINE(N||' * '||A||' = '||N*A);
+	END LOOP;
+	
+	END;
+	/
+
+Exceptions 
+============
+Runtime errors are called exceptions.
+
+We have two types of exceptions.
+
+1) Predefined exceptions 
+
+2) Userdefined exceptions 
+
+1) Predefined exceptions 
+--------------------------
+Built-in exceptions are called predefined exceptions.
+
+We have following list of predefined exceptions.
+
+1) NO_DATA_FOUND Exception 
+
+2) TOO_MANY_ROWS Exception 
+
+3) ZERO_DIVIDE Exception 
+
+4) VALUE_ERROR Exception 
+
+5) DUP_VAL_ON_INDEX Exception 
+
+6) OTHERS 
+
+1) NO_DATA_FOUND Exception 
+--------------------------
+This exception will raise when select statement does not return any row.
+
+ex:
+
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN
+	select ename into L_ename from emp where eid=209;
+	DBMS_OUTPUT.PUT_LINE(L_ename);	
+	EXCEPTION 
+	WHEN NO_DATA_FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check employee id');
+	END;
+	/
+
+2) TOO_MANY_ROWS Exception
+---------------------------
+This exception will raise when select statement returns more then one row.
+
+ex:
+
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN
+	select ename into L_ename from emp where deptno=10;
+	DBMS_OUTPUT.PUT_LINE(L_ename);	
+	EXCEPTION 
+	WHEN TOO_MANY_ROWS THEN 
+	DBMS_OUTPUT.PUT_LINE('Multiple Rows');
+	END;
+	/
+
+
+3) ZERO_DIVIDE Exception
+-----------------------
+This exception will occur when we are trying to divide any number with zero.
+
+ex:
+	DECLARE 
+	A number;
+	BEGIN 
+	A:=10/0;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION 
+	WHEN ZERO_DIVIDE THEN 
+	DBMS_OUTPUT.PUT_LINE('Dont divide by zero');
+	END;
+	/
+
+4) VALUE_ERROR Exception
+----------------------
+This exception will occur when there is a mismatch with datatype or size.
+
+ex:
+---
+
+	DECLARE 
+	L_esal emp.esal%TYPE;
+	BEGIN
+	select ename into L_esal from emp where eid=202;
+	DBMS_OUTPUT.PUT_LINE(L_esal);	
+	EXCEPTION 
+	WHEN VALUE_ERROR THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check datatype');
+	END;
+	/
+
+ex:
+	DECLARE 
+	A number(3);
+	BEGIN 
+	A:=12345;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION 
+	WHEN VALUE_ERROR THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check the size');
+	END;
+	/
+
+5) DUP_VAL_ON_INDEX Exception 
+----------------------------
+This exception will occur when we are trying to insert duplicate value in primary key.
+
+ex:
+	alter table emp add primary key (eid);
+	
+	BEGIN 
+	insert into emp values(201,'Jojo',78000,50,'Salesman',700);
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+	EXCEPTION 
+	WHEN DUP_VAL_ON_INDEX THEN
+	DBMS_OUTPUT.PUT_LINE('Duplicates not allowed');
+	END;
+	/
+		
+6) OTHERS 
+-----------
+It is universal angular exception which is used to handle all types of exceptions.
+
+ex:
+
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN
+	select ename into L_ename from emp where eid=209;
+	DBMS_OUTPUT.PUT_LINE(L_ename);	
+	EXCEPTION 
+	WHEN OTHERS THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check employee id');
+	END;
+	/
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

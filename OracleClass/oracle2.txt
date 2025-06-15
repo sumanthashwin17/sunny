@@ -1,0 +1,317 @@
+SQL
+=====
+SQL stands for Structured Query Language which is pronounce as SEQUEL.
+
+This language is used to communicate with oracle database.
+
+It is a case insensitive language.
+
+It is a command based language.
+
+Every command must starts with verb like create,update,delete,truncate and etc.
+
+Every command must ends with semicolon (;).
+
+It is a language is developed in 1972 by Mr.Codd (By IBM).
+
+Sub languages of SQL
+=====================
+We have five sub languages of SQL.
+
+1) DDL (Data Definition Language)
+
+2) DML (Data Manipulation Language)
+
+3) DRL/DQL (Data Retrieve/Query Language)
+
+4) TCL (Transaction Control Language)
+
+5) DCL (Data Control Language)
+
+
+1) DDL (Data Definition Language)
+---------------------------------
+This language is used to maintain the objects in database.
+
+It is a collection of five commands.
+
+ex:
+	create, alter, drop, truncate and rename 
+
+
+2) DML (Data Manipulation Language)
+------------------------------------
+This language is used to manipulate the which is present in database.
+
+It is a collection of four commands.
+
+ex:
+	insert, update, delete and merge 
+
+
+3) DRL/DQL (Data Retrieve/Query Language)
+-------------------------------
+This language is used to retrieve the data from database.
+
+It is a collection of one command.
+
+ex:
+	select 
+
+4) TCL (Transaction Control Language)
+-------------------------------------
+This language is used to maintain the transaction in a database.
+
+It is a collection of three commands.
+
+ex:
+	commit, rollback and savepoint 
+
+
+5) DCL (Data Control Language)
+-----------------------------
+This language is used to control the access of data.
+
+It is a collection of two commands.
+
+ex:
+	grant and revoke  
+
+
+Oracle 
+=============
+
+Version		:	10g
+
+Vendor		:	Oracle Corporation 
+
+Port No		:	1521 
+
+Website		: 	www.oracle.com/in/database
+
+Software	:	Express Edition 
+
+Username	:	system 
+
+Password	:	admin 
+
+Download link	: 	
+
+https://drive.google.com/file/d/0B9rC21sL6v0td1NDZXpkUy1oMm8/view?usp=drive_link&resourcekey=0-aKooR3NmAh_eLo_qGw_inA
+
+
+Establish the Connection with Oracle Database 
+==============================================
+To execute any query in database we need to establish the connection with database.
+Once the work with database is executed then we need to close the connection with database.
+
+1) 
+	SQL> connect
+	Enter username : system 
+	Enter password : admin 
+	
+	SQL> disconnect 
+
+
+2) 
+	SQL> conn 
+	Enter username : system 
+	Enter password : admin 
+	
+	SQL> disc 
+
+
+3)
+	SQL> conn system/admin 
+	SQL> disc 
+
+
+create command 
+===============
+It is used to create a table in a database.
+
+syntax:
+-------
+	create table <table_name>(col1 datatype(size),col2 datatype(size),.......,
+							colN datatype(size));
+
+ex:
+	create table student(sno number(3),sname varchar2(10),sadd varchar2(12));
+
+	create table dept(deptno number(3),dname varchar2(10),dloc varchar2(10));
+
+	create table emp(eid number(3),ename varchar2(10),esal number(10,2),
+				deptno number(3),job varchar2(10),comm number(6));	
+
+
+
+Describe command 
+================
+A describe command is used to see the structure of a table.
+
+syntax:
+------
+	desc <table_name>;
+ex:
+	desc student;
+	desc dept;
+	desc emp;
+
+Insert command 
+==============
+It is used to insert a record/row in a database table.
+
+syntax:
+-------
+	insert into <table_name> values(val1,val2,...,valN);
+
+ex:
+
+Approach1
+---------
+	insert into student values(101,'raja','hyd');
+
+	insert into student values(102,'ravi'); //invalid 
+
+	insert into student values('ravi',102,'delhi'); //invalid 
+
+	insert into student values(102,'ravi',null);
+
+Approach2
+----------
+	insert into student(sno,sname,sadd) values(103,'ramana','vizag');
+
+	insert into student(sno,sname) values(104,'ramulu');
+
+Approach3
+---------
+	Using '&' symbol we can read dynamic inputs.
+	
+	insert into student values(&sno,'&sname','&sadd');
+
+
+commit command 
+==============
+It is used to make the changes permanent to database.
+
+syntax:
+--------
+	commit;
+
+
+dept table 
+===========
+create table dept(deptno number(3),dname varchar2(10),dloc varchar2(10));
+
+insert into dept values(10,'CSE','HYD');
+insert into dept values(20,'ECE','DELHI');
+insert into dept values(30,'EEE','VIZAG');
+insert into dept values(40,'MEC','PUNE');
+commit;
+
+
+emp table 
+=========
+create table emp(eid number(3),ename varchar2(10),esal number(10,2),
+				deptno number(3),job varchar2(10),comm number(6));
+
+insert into emp values(201,'Alan',9000,10,'Clerk',null);
+insert into emp values(202,'Linda',19000,10,'Clerk',500);
+
+insert into emp values(203,'Kelvin',22000,20,'HR',500);
+insert into emp values(204,'Nelson',42000,30,'HR',900);
+
+insert into emp values(205,'Brook',27000,30,'Manager',500);
+insert into emp values(206,'Nancy',39000,30,'Manager',800);
+
+commit;
+
+select command 
+===============
+It is used to select the rows/records from database table.
+
+syntax:
+------
+	select * from <table_name>;
+
+	Here '*' means all rows and columns.
+
+ex:
+	select * from emp;
+	select * from dept;
+	select * from student;
+
+Projection:
+-----------
+Selecting specific columns from database table is called projection.
+
+ex:
+	select sno,sname,sadd from student;
+	select sno,sname from student;
+	select sadd from student;
+
+Arithmetic operations:
+----------------------
+In select command we can perform arithmetic operations also.
+
+ex:
+	select sno-100,sname,sadd from student;
+	select sno+100,sname,sadd from student;
+
+Column Alias: 
+-------------
+A userdefined heading given to a column is called column alias.	
+ex:
+	select sno-100 as SNO,sname,sadd from student;
+	
+	select sno as rollno ,sname as name,sadd as city from student;
+
+Interview Queries
+=================
+
+Q) Write a query to display list of tables present in database?
+
+	select * from tab;
+
+
+Q) Write a query to display logical database name?
+
+	select * from global_name;
+
+
+Q) Write a query to display employees information from employee table?
+
+	select * from emp;
+
+
+Q) Write a query to display employee id, employee name and employee salary from emp table?
+
+	select eid,ename,esal from emp;
+
+
+Q) Write a query to display employee id, employee name, employee salary and annual salary from emp table?
+
+	select eid,ename,esal,esal*12 from emp;
+
+
+Q) Write a query to display employee id, employee name, employee salary and annual salary as ANNUAL_SALARY from emp table?
+
+	select eid,ename,esal,esal*12 as ANNUAL_SALARY from emp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
